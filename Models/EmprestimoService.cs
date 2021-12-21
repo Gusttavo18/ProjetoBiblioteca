@@ -34,7 +34,35 @@ namespace Biblioteca.Models
         {
             using(BibliotecaContext bc = new BibliotecaContext())
             {
-                return bc.Emprestimos.Include(e => e.Livro).ToList();
+                 IQueryable<Emprestimo> query;
+                
+                if(filtro != null)
+                {
+                    //definindo dinamicamente a filtragem
+                    switch(filtro.TipoFiltro)
+                    {
+                        case "Usuario":
+                            query = bc.Emprestimos.Where(n => n.NomeUsuario.Contains(filtro.Filtro));
+                        break;
+
+                        case "Livro":
+                            query = bc.Emprestimos.Where(n => n.Livro.Titulo.Contains(filtro.Filtro));
+                        break;
+
+                        default:
+                            query = bc.Emprestimos;
+                        break;
+                    }
+                }
+                else
+                {
+                    // caso filtro não tenha sido informado
+                    query = bc.Emprestimos;
+                }
+                
+                //ordenação padrão
+                return query.Include(l => l.Livro).ToList();
+                //return bc.Emprestimos.Include(e => e.Livro).ToList();
             }
         }
 
