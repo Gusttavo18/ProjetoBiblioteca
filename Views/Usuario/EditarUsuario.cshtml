@@ -1,0 +1,17 @@
+@model Usuario
+<h1>Realize a edição de Usuário</h1>
+
+<form action="EditarUsuario" method="post">
+    <input type="text" name="Nome" id="userNome" value="@Model.Nome" required>
+    <input type="text" name="Login" id="userLogin" value="@Model.Login" required>
+    <input type="text" name="Senha" id="userSenha" value="@Model.Senha" required>
+
+    <select name="tipo" id="userTipo">
+        <option value="@Usuario.admin">Administrador</option>
+        <option value="@Usuario.padrao">Padrão</option>
+    </select>
+
+    <input type="hidden" asp-for="Id"/>
+
+    <input type="submit" value="CONCLUIR EDIÇÃO">
+</form>
