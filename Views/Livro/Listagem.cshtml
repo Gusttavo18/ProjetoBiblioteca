@@ -28,7 +28,7 @@
             </div>
 
             <div class="form-group mb-2 mx-sm-3">
-                <select name="itensPorPagina" id="itensPorPagina">
+                <select class="form-control" name="itensPorPagina" id="itensPorPagina">
                     <option value="10">10 livros</option>
                     <option value="20">20 livros</option>
                     <option value="30">30 livros</option>
@@ -39,15 +39,6 @@
             </div>
 
             <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
-            
-            <div id="SeletorPaginas" class="form-group mb-2 mx-sm-3">
-                <span>Página:</span>
-                @for (int i = 1; i < NumTotalDePag; i++)
-                {
-                    <span><a href="/Livro/Listagem?PaginaAtual=@i">@i, </a></span>
-                }
-                </span>
-            </div>
 
         </form>
     </div>
@@ -86,5 +77,17 @@
                 <h4>Sem registro de livros!</h4>
             }
         </table>
+        <div id="SeletorPaginas" class="text-center">
+            @for (int i = 1; i < NumTotalDePag; i++)
+            {
+                <span class="form-group mb-1 mx-sm">
+
+                    <a href="/Livro/Listagem?PaginaAtual=@i" type="button" class="btn btn-secondary">@i </a>
+
+                </span>
+            }
+            </span>
+        </div>
     </div>
+
 </div>
