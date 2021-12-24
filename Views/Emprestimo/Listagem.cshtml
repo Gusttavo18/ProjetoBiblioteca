@@ -12,7 +12,9 @@
     {
         NumTotalDePag = Model.Count / NumLivrosPorPag + (Model.Count % NumLivrosPorPag == 0 ? 0 : 1);
     }
-}
+
+    string Classe = "";
+    }
 
 <div class="row">
     <div class="col-md-12">
@@ -27,7 +29,7 @@
                 <input type="text" placeholder="Filtro" name="Filtro" class="form-control" />
             </div>
 
-             <div class="form-group mb-2 mx-sm-3">
+            <div class="form-group mb-2 mx-sm-3">
                 <select class="form-control" name="itensPorPagina" id="itensPorPagina">
                     <option value="10">10 livros</option>
                     <option value="20">20 livros</option>
@@ -60,25 +62,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for(int i = (PaginaAtual - 1) * NumLivrosPorPag; i < (NumLivrosPorPag * PaginaAtual < Model.Count
-                   ? NumLivrosPorPag * PaginaAtual : Model.Count); i++)
+                    @foreach (Emprestimo e in Model)
                     {
-                        string classe ="";
-                        DateTime dataAtual = DateTime.Now;
-                        if (Model[i].DataDevolucao < dataAtual && Model[i].Devolvido == false)
+                        @if ((System.DateTime.Compare(System.DateTime.Now, e.DataDevolucao) > 0) && !e.Devolvido)
                         {
-                            classe = "table-danger";
-                        }else{
-                            classe = "";
+                            Classe = "table-danger";
                         }
-                        <tr class="@classe">
-                            <td>@Model[i].Id</td>
-                            <td>@Model[i].NomeUsuario</td>
-                            <td>@Model[i].DataEmprestimo.ToString("dd/MM/yyyy")</td>
-                            <td>@Model[i].DataDevolucao.ToString("dd/MM/yyyy")</td>
-                            <td>@Model[i].Livro.Titulo</td>
-                            <td>@Model[i].Livro.Autor</td>
-                            <td><a href="/Emprestimo/Edicao/@Model[i].Id">Editar</a></td>
+                        else if (e.Devolvido)
+                        {
+                            Classe = "table-success";
+                        }
+                        else
+                        {
+                            Classe = "";
+                        }
+
+                        <tr class="@Classe">
+                            <td>@e.Id</td>
+                            <td>@e.NomeUsuario</td>
+                            <td>@e.DataEmprestimo.ToString("dd/MM/yyyy")</td>
+                            <td>@e.DataDevolucao.ToString("dd/MM/yyyy")</td>
+                            <td>@e.Livro.Titulo</td>
+                            <td>@e.Livro.Autor</td>
+                            <td><a href="/Emprestimo/Edicao/@e.Id">Editar</a></td>
                         </tr>
                     }
                 </tbody>
@@ -90,7 +96,7 @@
             }
 
         </table>
-         <div id="SeletorPaginas" class="text-center">
+        <div id="SeletorPaginas" class="text-center">
             @for (int i = 1; i < NumTotalDePag; i++)
             {
                 <span class="form-group mb-1 mx-sm">
